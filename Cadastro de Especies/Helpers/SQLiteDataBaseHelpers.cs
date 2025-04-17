@@ -19,8 +19,15 @@ namespace Cadastro_de_Especies.Helpers
                 _conn = new SQLiteAsyncConnection(path);
                 _conn.CreateTableAsync<Especie>().Wait();
             }
-            public void Insert() { }
-            public void Update() { } 
+            public Task<int> Insert(Especie p)
+            {
+                _conn.InsertAsync(p);
+            }
+            public void Update(Especie p) 
+            {
+                string sql = "UPDATE Especie SET Nome=? WHERE Codigo=?";
+                _conn.QueryAsync<Especie>(sql, p.Nome, p.Codigo);
+            } 
             public void Delete() { }
             public void GetAll() { }
             public void Search() { }
