@@ -23,14 +23,30 @@ namespace Cadastro_de_Especies.Helpers
             {
                 _conn.InsertAsync(p);
             }
-            public void Update(Especie p) 
+            public Task<List<Especie>> Update(Especie p) 
             {
                 string sql = "UPDATE Especie SET Nome=? WHERE Codigo=?";
                 _conn.QueryAsync<Especie>(sql, p.Nome, p.Codigo);
             } 
-            public void Delete() { }
-            public void GetAll() { }
-            public void Search() { }
+            public void Delete(Especie p) 
+            {
+                _conn.Table<Especie>().DeleteAsync(i => i.Codigo == P);
+
+                /*
+                string sql = "DELETE Especie WHERE Codigo=?";
+                _conn.QueryAsync<Especi>(sql, p);
+                */
+            }
+            public Task<List<Especie>> GetAll() 
+            {
+                 return _conn.Table<Especie>().ToListAsync();
+   
+            }
+            public void Search(string p) 
+            {
+                string sql = "SELECT * FROM Especie WHERE Nome LIKE %'" + p + "'%";
+                return _conn.QueryAsync<Especie>(sql);
+            }
         
     }
 }
