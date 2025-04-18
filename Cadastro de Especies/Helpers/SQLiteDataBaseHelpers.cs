@@ -19,30 +19,36 @@ namespace Cadastro_de_Especies.Helpers
                 _conn = new SQLiteAsyncConnection(path);
                 _conn.CreateTableAsync<Especie>().Wait();
             }
-            public Task<int> Insert(Especie p)
+            public Task<int>Insert(Especie p)
             {
-                _conn.InsertAsync(p);
+
+                return  _conn.InsertAsync(p);
             }
             public Task<List<Especie>> Update(Especie p) 
             {
                 string sql = "UPDATE Especie SET Nome=? WHERE Codigo=?";
-                _conn.QueryAsync<Especie>(sql, p.Nome, p.Codigo);
+                return _conn.QueryAsync<Especie>(sql, p.Nome, p.Codigo);
             } 
-            public void Delete(Especie p) 
+
+        /*
+            public Task<Especie> Delete(int p) 
             {
-                _conn.Table<Especie>().DeleteAsync(i => i.Codigo == P);
+                return _conn.Table<Especie>().DeleteAsync(i => i.Codigo == p);
 
                 /*
                 string sql = "DELETE Especie WHERE Codigo=?";
-                _conn.QueryAsync<Especi>(sql, p);
-                */
+                _conn.QueryAsync<Especi>(sql, p); 
+
+                -> É possivel utilizar essa forma pois e assim que seria usando o SQL
+                
             }
+        */
             public Task<List<Especie>> GetAll() 
             {
                  return _conn.Table<Especie>().ToListAsync();
    
             }
-            public void Search(string p) 
+            public Task<List<Especie>> Search(string p) 
             {
                 string sql = "SELECT * FROM Especie WHERE Nome LIKE %'" + p + "'%";
                 return _conn.QueryAsync<Especie>(sql);

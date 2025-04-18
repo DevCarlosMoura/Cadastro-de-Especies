@@ -1,25 +1,25 @@
-﻿namespace Cadastro_de_Especies
+﻿using Cadastro_de_Especies.Models;
+using Cadastro_de_Especies.Helpers;
+using System;
+
+namespace Cadastro_de_Especies
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
 
         public MainPage()
         {
             InitializeComponent();
         }
-
-        private void OnCounterClicked(object sender, EventArgs e)
+        private async void btnInsert_Clicked(object sender, EventArgs e)
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            Especie esp = new Especie();
+            esp.Nome = txtNome.Text;
+            
+            await App.Db.Insert(esp);
+            await DisplayAlert("Sucesso", "Espécie cadastrada com sucesso!", "OK");
         }
+       
     }
 
 }
